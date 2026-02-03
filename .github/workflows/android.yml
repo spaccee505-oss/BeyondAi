@@ -14,7 +14,10 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: "stable"
-
+- name: Set up Flutter
+  uses: subosito/flutter-action@v2
+  with:
+    flutter-version: '3.13.6'   # <-- specify the exact stable version
       - run: flutter pub get
       - run: flutter build apk --release
 
