@@ -1,7 +1,9 @@
-name: Build BeyondAI APK
+name: Flutter CI
 
 on:
   push:
+    branches: [ "main" ]
+  pull_request:
     branches: [ "main" ]
 
 jobs:
@@ -14,19 +16,17 @@ jobs:
       - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: "stable"
-- name: Set up Flutter
-  uses: subosito/flutter-action@v2
-  with:
-    flutter-version: '3.13.6'   # <-- specify the exact stable version
-      - run: flutter pub get
-      - run: flutter build apk --release
+          flutter-version: '3.13.6'
+          channel: stable
 
-      - name: Build APK
-        run: flutter build apk --release
+      - name: Verify Flutter
+        run: flutter --version
 
-      - name: Upload APK artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: BeyondAI-APK
-          path: build/app/outputs/flutter-apk/app-release.apk  
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Analyze project
+        run: flutter analyze
+
+      - name: Run tests
+        run: flutter test
